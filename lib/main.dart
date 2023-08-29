@@ -185,7 +185,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ids.forEach((key, value) {
         downIds.add(MessageItem(value.title, 'Artist: ${value.artist}', key));
       });
-      creatDownloadInfos();
 
       await DownloadFiles(respJson,id,ids);
     } else {
