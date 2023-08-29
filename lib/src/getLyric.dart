@@ -18,7 +18,7 @@ class getLyric {
         jsonDecode(await src().wePost("/api/song/lyric?_nmclfl=1", params));
     return {
       "lyric": resp['lrc']['lyric'],
-      'tlyric': translate && !resp.containsKey('pureMusic') ? resp["tlyric"]["lyric"] : ""
+      'tlyric': translate && !resp.containsKey('pureMusic') && resp.containsKey('tlyric') ? resp["tlyric"]["lyric"] : ""
     };
   }
 }

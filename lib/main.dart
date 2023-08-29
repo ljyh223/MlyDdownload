@@ -11,7 +11,6 @@ import 'widget/InputDialog.dart';
 import 'dart:developer' as dev;
 import 'package:flutter_speed_dial/flutter_speed_dial.dart';
 import 'widget/MusicList.dart';
-import 'widget/DownList.dart';
 import 'widget/utils.dart';
 import 'SQLbase/Music.dart';
 import 'SQLbase/database.dart';
@@ -176,7 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       List<downFile> respJson=[];
       for (var e in List.from(resp['data'])){
-        var tempFilename='$saveFilepath/${("${specialStr.re(ids[e['id'].toString()]?.name ?? "")}.${e['type'] ?? "null"}")}';
+        var tempFilename='$saveFilepath/${specialStr.re(GloadName)}/${("${specialStr.re(ids[e['id'].toString()]?.name ?? "")}.${e['type'] ?? "null"}")}';
         respJson.add(downFile(e['id'].toString(), e['url'] ?? "null",
             tempFilename,e['type'].toString().toLowerCase()));
 
@@ -186,10 +185,8 @@ class _MyHomePageState extends State<MyHomePage> {
       ids.forEach((key, value) {
         downIds.add(MessageItem(value.title, 'Artist: ${value.artist}', key));
       });
-      setState(() {
-        _dynamicWidgets = DownListParent(items: downIds);
-      });
-      creatDownloadInfos(downIds.length);
+      creatDownloadInfos();
+
       await DownloadFiles(respJson,id,ids);
     } else {
       WidgetUtils.showToast("请先收藏歌单哦", Colors.orange);
@@ -200,20 +197,13 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) => const InputDialog(
           title: Text("give me your id"), hintText: "id"),
-    );
-    //6904724287
-    //demo1 只有一首歌的歌单
-    // https://music.163.com/playlist?id=8677413940&userid=5128948380
-    //3首歌
-    //https://music.163.com/playlist?id=8656494498&userid=5128948380
-    // inputText = "8656494498";
-    if (inputText != null) {
+    ) ?? "";
+    if (inputText !="") {
       welcome = false;
       id=inputText;
-      Goladeid=inputText;
+      GloadId=inputText;
       _getToggleChild();
 
-      // await _getToggleChild();
     }
   }
   collectPlayList()async {

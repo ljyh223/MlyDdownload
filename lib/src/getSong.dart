@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:core';
 import '../SQLbase/MusicBase.dart';
 import '../core/crypto.dart';
-
+import '../utils/Counter.dart';
 
 class getSong {
   Future<List<MusicBase>> getPlaylist(String id, {bool ids = false}) async {
@@ -16,6 +16,7 @@ class getSong {
     Map<String, dynamic> resp =
         jsonDecode(await src().wePost("/api/v6/playlist/detail", params));
     List<dynamic> ids = resp["playlist"]["trackIds"];
+    GloadName=resp['playlist']['name'];
     return List<MusicBase>.from(ids.map((e) => MusicBase.fromJson({"id":e['id'].toString()})));
   }
 

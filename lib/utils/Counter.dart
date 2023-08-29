@@ -1,1 +1,2 @@
-String Goladeid='';
+String GloadId='';
+String GloadName='';

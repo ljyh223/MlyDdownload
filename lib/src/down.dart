@@ -1,22 +1,11 @@
 
 import 'dart:async';
-import 'dart:developer' as dev;
 
-
-var downloadInfos=List.generate(1, (_) => StreamController<List<double>>());
-creatDownloadInfos(int k){
-  downloadInfos=List.generate(k, (_) => StreamController<List<double>>());
-
+var downloadCount=StreamController<int>();
+creatDownloadInfos(){
+  downloadCount=StreamController<int>();
 }
-closeDownloadInfos(int i){
-  if(downloadInfos.isNotEmpty){
-    downloadInfos[i].close();
-  }
 
-}
-clearDownloadInfos(){
-  downloadInfos=[];
-}
 
 class downFile{
   late String id;

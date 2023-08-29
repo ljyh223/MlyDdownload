@@ -24,7 +24,7 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
   }
   else if (status.isDenied) {
     dev.log('被拒');
-    WidgetUtils.showToast("请同意外部文件访问权限", Colors.red);
+    WidgetUtils.showToast("请手动同意外部文件访问权限", Colors.red);
     return;
   } else if (status.isPermanentlyDenied) {
     dev.log('永拒');
@@ -34,14 +34,11 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
 
 
   var count=0;
-  var allCurrentProgress = List.generate(files.length, (index) => 0.0);
   SharedPreferences prefs = await SharedPreferences.getInstance();
   for (var i = 0; i < files.length; i++) {
     if (files[i].filename == "") return;
     //部分音乐无法下载
     if (files[i].url == "null"){
-      allCurrentProgress[i] = -1;
-      downloadInfos[i].sink.add(allCurrentProgress);
       continue;
     }
     Dio dio = Dio();
@@ -52,20 +49,11 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
       dev.log('file exiata true');
       f.delete();
     }
-    await dio.download(files[i].url, files[i].filename,
-        onReceiveProgress: (received, total) {
-          double currentProgress = -1.0;
-
-          if (total != -1) {
-            currentProgress = received / total;
-            currentProgress = double.parse(currentProgress.toStringAsFixed(2));
-
-            allCurrentProgress[i] = currentProgress;
-            downloadInfos[i].sink.add(allCurrentProgress);
-          }
-        });
+    //接受音频文件
+    await dio.download(files[i].url, files[i].filename,);
     count+=1;
-    closeDownloadInfos(i);
+    dev.log('${files[i].filename}---${files[i].id}');
+
 
     var enLyric = prefs.getBool('lytic') ?? true;
     var enTlyric = prefs.getBool('lytic') ?? true;
@@ -86,7 +74,8 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
     };
     // dev.log(jsonEncode(data));
     MusicDao.getInstance().insert(id, MusicBase(files[i].id,name: files[i].filename.split('/').last));
-    dev.log("${files[i].filename}--->${(await WriteMetadata().writemetadata(data)).toString()}");
+    dev.log("${files[i].filename}---${files[i].id}>${(await WriteMetadata().writemetadata(data)).toString()}");
+    downloadCount.sink.add(count);
   }
   WidgetUtils.showToast("下载完成,共计$count", Colors.green);
 }
