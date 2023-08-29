@@ -1,11 +1,7 @@
-import 'dart:async';
-
-
 import 'package:flutter/material.dart';
 import '../src/getSong.dart';
 import '../SQLbase/Music.dart';
 import 'MusicItem.dart';
-import 'dart:developer' as dev;
 import '../utils/Counter.dart';
 class MusicList extends StatefulWidget {
   MusicList(this.id, this.ids);
@@ -28,7 +24,7 @@ class _MusicList extends State<MusicList> {
   Widget build(BuildContext context) {
     return Container(
       child: FutureBuilder<Map<String, dynamic>>(
-        future: getSong().getAll_Song(Goladeid),
+        future: getSong().getAll_Song(GloadId),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
           // 请求已结束
           if (snapshot.connectionState == ConnectionState.done) {

@@ -24,7 +24,7 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
   }
   else if (status.isDenied) {
     dev.log('被拒');
-    WidgetUtils.showToast("请同意外部文件访问权限", Colors.red);
+    WidgetUtils.showToast("请手动同意外部文件访问权限", Colors.red);
     return;
   } else if (status.isPermanentlyDenied) {
     dev.log('永拒');

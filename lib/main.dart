@@ -176,7 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
       List<downFile> respJson=[];
       for (var e in List.from(resp['data'])){
-        var tempFilename='$saveFilepath/${("${specialStr.re(ids[e['id'].toString()]?.name ?? "")}.${e['type'] ?? "null"}")}';
+        var tempFilename='$saveFilepath/${specialStr.re(GloadName)}/${("${specialStr.re(ids[e['id'].toString()]?.name ?? "")}.${e['type'] ?? "null"}")}';
         respJson.add(downFile(e['id'].toString(), e['url'] ?? "null",
             tempFilename,e['type'].toString().toLowerCase()));
 
@@ -200,20 +200,13 @@ class _MyHomePageState extends State<MyHomePage> {
       context: context,
       builder: (BuildContext context) => const InputDialog(
           title: Text("give me your id"), hintText: "id"),
-    );
-    //6904724287
-    //demo1 只有一首歌的歌单
-    // https://music.163.com/playlist?id=8677413940&userid=5128948380
-    //3首歌
-    //https://music.163.com/playlist?id=8656494498&userid=5128948380
-    // inputText = "8656494498";
-    if (inputText != null) {
+    ) ?? "";
+    if (inputText !="") {
       welcome = false;
       id=inputText;
-      Goladeid=inputText;
+      GloadId=inputText;
       _getToggleChild();
-
-      // await _getToggleChild();
+      WidgetUtils.showToast("共计${ids.length}首", Colors.blue);
     }
   }
   collectPlayList()async {
