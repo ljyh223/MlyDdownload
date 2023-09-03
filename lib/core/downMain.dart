@@ -7,17 +7,18 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:developer' as dev;
 
-import '../SQLbase/Music.dart';
 import '../SQLbase/MusicBase.dart';
 import '../SQLbase/database.dart';
 import '../src/down.dart';
+import '../utils/Counter.dart';
 import '../utils/Lyric.dart';
 import '../utils/WriteMetadata.dart';
 import '../widget/utils.dart';
-DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
+DownloadFiles(List<downFile> files,String id) async {
 
   Permission permission = Permission.manageExternalStorage;
   PermissionStatus status = await permission.status;
+  var ids=globalIds;
 
   if(status.isGranted){
     dev.log("ok");
@@ -78,4 +79,6 @@ DownloadFiles(List<downFile> files,String id ,Map<String, Music> ids) async {
     downloadCount.sink.add(count);
   }
   WidgetUtils.showToast("下载完成,共计$count", Colors.green);
+  downloadCount.close();
 }
+

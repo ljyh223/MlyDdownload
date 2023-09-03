@@ -16,7 +16,7 @@ class getSong {
     Map<String, dynamic> resp =
         jsonDecode(await src().wePost("/api/v6/playlist/detail", params));
     List<dynamic> ids = resp["playlist"]["trackIds"];
-    GloadName=resp['playlist']['name'];
+    globalName=resp['playlist']['name'];
     return List<MusicBase>.from(ids.map((e) => MusicBase.fromJson({"id":e['id'].toString()})));
   }
 

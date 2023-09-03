@@ -2,6 +2,10 @@
 import 'dart:async';
 
 var downloadCount=StreamController<int>();
+creatStream(){
+  downloadCount.close();
+  downloadCount=StreamController<int>();
+}
 
 
 class downFile{

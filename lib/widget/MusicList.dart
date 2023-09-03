@@ -6,28 +6,27 @@ import '../SQLbase/Music.dart';
 import 'MusicItem.dart';
 import '../utils/Counter.dart';
 class MusicList extends StatefulWidget {
-  MusicList(this.id, this.ids);
+  MusicList(this.id);
 
   final String id;
-  final Map<String, Music> ids;
 
 
   @override
-  State<MusicList> createState() => _MusicList(id, ids: ids);
+  State<MusicList> createState() => _MusicList(id);
 }
 
 class _MusicList extends State<MusicList> {
   final String id;
-  final Map<String, Music> ids;
 
-  _MusicList(this.id, {required this.ids});
+
+  _MusicList(this.id);
 
   
   @override
   Widget build(BuildContext context) {
     return
         FutureBuilder<Map<String, dynamic>>(
-          future: getSong().getAll_Song(GloadId),
+          future: getSong().getAll_Song(globalId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             // 请求已结束
             if (snapshot.connectionState == ConnectionState.done) {
@@ -36,13 +35,14 @@ class _MusicList extends State<MusicList> {
                 return Text("Error: ${snapshot.error}");
               } else {
                 // 请求成功，显示数据
+
                 var value = snapshot.data;
                 var items =
                 List<ListItem>.from(List.from(value['songs']).map((e) {
                   //此处name为filename
                   String artist = getName(
                       List.from(e["ar"]).map((r) => r['name']).toList());
-                  ids.addAll({
+                  globalIds.addAll({
                     e["id"].toString(): Music(
                         e["id"].toString(),
                         e['name'],
@@ -55,27 +55,26 @@ class _MusicList extends State<MusicList> {
                       .map((r) => r['name'])
                       .toList()}',e['id'].toString());
                 }));
-                WidgetUtils.showToast("共计${ids.length}首", Colors.blue);
+                WidgetUtils.showToast("共计${globalIds.length}首", Colors.blue);
+
 
                 return Column(
-                  // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    // Expanded(child: ,)
                     StreamBuilder<int>(
-                      stream: downloadCount.stream, //
-                      //initialData: ,// a Stream<int> or null
+                      stream: downloadCount.stream,
                       builder: (BuildContext context, AsyncSnapshot<int> snapshot) {
                         if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+
                         switch (snapshot.connectionState) {
                           case ConnectionState.none:
-                            return Text(GloadName,style: const TextStyle(color: Colors.blue));
+                            return Text(globalName,style: const TextStyle(color: Colors.blue));
                           case ConnectionState.waiting:
-                            return Text('$GloadName, Count: 0/${items.length}',style: const TextStyle(color: Colors.blue));
+                            return Text('$globalName, Count: 0/${items.length}',style: const TextStyle(color: Colors.blue));
                           case ConnectionState.active:
                             return Text(
-                                '$GloadName, Count: ${snapshot.data}/${items.length}',style: const TextStyle(color: Colors.blue));
+                                '$globalName, Count: ${snapshot.data}/${items.length}   下载in~~~~ng!',style: const TextStyle(color: Colors.blue));
                           case ConnectionState.done:
-                            return Text('$GloadName~',style: const TextStyle(color: Colors.blue),);
+                            return Text('$globalName~',style: const TextStyle(color: Colors.blue),);
                         }
                       },
                     ),

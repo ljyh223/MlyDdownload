@@ -43,7 +43,7 @@ class _InputDialogState extends State<InputDialog> {
         ElevatedButton(
           style:ButtonStyle(backgroundColor:MaterialStateProperty.all(Colors.transparent),elevation:MaterialStateProperty.all(0)),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.pop(context,"");
           },
           child: const Text('cancel',style: TextStyle(color: Colors.grey)),
         ),
